@@ -1,17 +1,21 @@
-<h2>ESP32 PoolMaster</h2>
+<h2>ESP32 PoolMaster for salt water pools</h2>
 <h4>Brief description</h4>
-<p> This project is a software port to an ESP32 platform of the PoolMaster project from Loic74650 (https://github.com/Loic74650/PoolMaster)<br />
-Compared to the initial project, the main differences are:
+<p> This project is a folk from Gixy31 software port to an ESP32 platform of the PoolMaster project from Loic74650 (https://github.com/Loic74650/PoolMaster)<br />
+Compared to the initial ESP32 project from Gixy31, the main differences are:
 <ul>
-  <li> ESP32 MCU with WiFi (multiple access points)</li>
-  <li> ESP32-Arduino framework, PlatformIO IDE </li>
-  <li> async MQTT client</li>
-  <li> JSON upgrade to version 6</li>
+  <li> utilises robotdyns esp32 smart home controller. </li>
+  <li> JSON upgrade</li>
   <li> lots of code modifications, keeping the general behaviour</li>
-  <li> add a fourth pump (cleaning robot)</li>
-  <li> manage only 2 relays (+ the four pumps)</li>
-  <li> analog measurements done by external ADC I2C module (ADS1115), in async mode</li>
-  <li> and more...
+  <li> added clorinator instead of robot</li>
+  <li> manage only 1 relay as light and a spare is commeneted out</li>
+  <li> added winter buttom back in</li>
+  <li> changes the dosing behaviour of the PH pump</li>
+  <li> use the origianl Grafa json with modes from Loic74650/li>
+  <li> addded extra fields to DB</li>
+  <li> changed the pump.h to accomodate the board im using/li>
+  <li> Added external RTC in case internet is down it will get local time and still work as intended/li>
+	
+	
 </ul>  <br />
   The project isn't a fork of the original one due to the different structure of source files with PlatformIO ((.cpp, .h).
   A dedicated board has been designed to host all components. There are 8 LEDs at the bottom to display status, warnings and alarms.
@@ -31,16 +35,15 @@ Compared to the initial project, the main differences are:
 
   </p><br /><br />
 
-<p align="center"> <img src="/docs/Profiling.jpg" width="802" title=""> </p>  <br /><br />
-<p align="center"> <img src="/docs/PoolMaster_board.JPG" width="802" title="Board"> </p> <br /><br />  
+<p align="center"> <img src="/docs/Profiling.jpg" width="802" title=""> </p>  <br /><br />r />  
 <p align="center"> <img src="/docs/Page 0.JPG" width="300" title=""> </p>
 <p align="center"> <img src="/docs/Page 1.JPG" width="300" title=""> </p>
 <p align="center"> <img src="/docs/Page 3.JPG" width="300" title=""> </p><br /><br />  
  
 
 
-<h2>PoolMaster 5.0.0</h2>
-<h2>Arduino Mega2560 (or Controllino-Maxi) Ph/Orp (Chlorine) regulation system for home pools</h2>
+<h2>PoolMaster</h2>
+
 
 <br />
 <p align="center"> <img src="/docs/PoolMaster_2.jpg" width="802" title="Overview"> </p> <br /><br />
@@ -56,13 +59,13 @@ Compared to the initial project, the main differences are:
 <p>Four main metrics are measured and periodically reported over MQTT and a 3.5" Nextion touch screen: water temperature and pressure, pH and ORP values.<br />
 Pumps states, tank-levels estimates and other parameters are also periodically reported<br />
 Two PID regulation loops are running in parallel: one for PH, one for ORP<br />
-An additional simple (on/off) regulation loop is handling the water temperature (it starts/stops the house-heating system circulator which brings heat to a heat exchanger mounted on the pool water pipes)<br />
+An additional simple (on/off) regulation loop is handling the Chlorinator (it starts/stops the chlorinator 1 min after the pump has started and stops it after 6 hours)<br />
 pH is regulated by injecting Acid from a tank into the pool water (a relay starts/stops the Acid peristaltic pump)<br />
-ORP is regulated by injecting Chlorine from a tank into the pool water (a relay starts/stops the Chlorine peristaltic pump)<br />
+ORP is not been used but can be adapted to start stop the chlorinator <br />
 Defined time-slots and water temperature are used to start/stop the filtration pump for a daily given amount of time (a relay starts/stops the filtration pump)<br />
 Tank-levels are estimated based on the running-time and flow-rate of each pump.<br />
-Ethernet connectivity parameters can be set through a webpage accessible from the LAN at http://PoolMaster.local.<br />
-If an ethernet connection is available, the internal clock (RTC) is synchronized with a time-server every day at midnight.<br />
+wifi connected but no locla web page yet to set ip address or wireless ssid parameteres. this needs to be done via the code for now<br />
+<br />
 
 An API function enables telling the system what the outside air temperature is. In case it is below -2.0°C, filtration is started until it rises back above +2.0°C<br />
 Communication with the system is performed using the MQTT protocol over an Ethernet connection to the local network/MQTT broker.<br /><br />
@@ -102,24 +105,16 @@ IO2: a variable of type BYTE where each individual bit is the state of a digital
 <li>R7: state of Relay7 (0=off, 1=on)</li>
 </ul><br />
 
-<h4>How to compile</h4>
-<p>
-- this code was developped for two main hardware configurations (see list in the hardware section below):<br /> 
-<ul>
-<li>Controllino-Maxi or</li> 
-<li>Arduino Mega 2560 + Ethernet shield + relay shield + RTC module</li></ul>
-- select the target board type in the Arduino IDE (either "Arduino Mega 2560" or "Controllino Maxi") code should compile for both types<br />
-
 
 <h4>Compatibility</h4>
 	
 <p>For this sketch to work on your setup you must change the following in the code (in the "Config.h" file):<br />
 - possibly the pinout definitions depending on your wiring<br />
 - the unique address of the DS18b20 water temperature sensor<br />
-- MAC and IP address of the Ethernet shield<br />
+- Wifi credentials<br />
 - MQTT broker IP address and login credentials<br />
 - possibly the topic names on the MQTT broker to subscribe and publish to<br />
-- the Kp,Ki,Kd parameters for both PID loops in case your peristaltic pumps have a different throughput than 1.5Liters/hour for the pH pump and 3.0Liters/hour for the Chlorine pump. Also the default Kp values were adjusted for a 50m3 pool volume. You might have to adjust the Kp values in case of a different pool volume and/or peristaltic pumps throughput (start by adjusting it proportionally). In any case these parameters are likely to require adjustments for every pool<br /></p>
+- the Kp,Ki,Kd parameters for both PID loops in case your peristaltic pumps have a different throughput than 1.5Liters/hour for the pH pump and 1.5Liters/hour for the Chlorine pump. Also the default Kp values were adjusted for a 50m3 pool volume. You might have to adjust the Kp values in case of a different pool volume and/or peristaltic pumps throughput (start by adjusting it proportionally). In any case these parameters are likely to require adjustments for every pool<br /></p>
 
 <h4>Tips</h4>
 Before attempting to regulate your pool water with this automated system, it is essential that you start with:<br />
@@ -186,10 +181,12 @@ Below are the Payloads/commands to publish on the "PoolTopicAPI" topic (see hard
 <h4>Hardware</h4>
 <p>
 <ul>
-<li><a title="https://www.controllino.biz/product/controllino-maxi/" href="https://www.controllino.biz/product/controllino-maxi/">x1 CONTROLLINO MAXI (ATmega2560)</a> or Arduino Mega 2560 + Ethernet shield + relay shield + RTC module</li>
-<li><a title="https://www.phidgets.com/?tier=3&catid=11&pcid=9&prodid=103" href="https://www.phidgets.com/?tier=3&catid=11&pcid=9&prodid=103">x2 Phidgets PH/ORB amplifier modules</a></li> 
-<li><a title="https://www.dfrobot.com/product-1621.html" href="https://www.dfrobot.com/product-1621.html">x2 Galvanic isolator for the pH and Orp probes</a></li> 
-<li><a title="https://www.trattamento-acque.net/dosaggio/pompe-peristaltiche/pompe-a-portata-fissa/pompa-serie-mp2-p-detail.html" href="https://www.trattamento-acque.net/dosaggio/pompe-peristaltiche/pompe-a-portata-fissa/pompa-serie-mp2-p-detail.html">x2 Peristaltic pumps, suction lances for tanks, pH and Orp probes</a></li>
+<li><a title="Robotdyn esp32 smart home controller" href="[https://www.controllino.biz/product/controllino-maxi/](https://robotdyn.com/catalog/smarthome/esp32-4-relays-controller-board-for-wi-fi-or-bluetooth-smart-home-system-equipment-control-programmable-esp32-4-relays-controller-board-for-wi-fi-or-bluetooth-smart-home-system-equipment-control-programmable-esp32-4-relays-controller-boa)">x1 esp32 smart home controller</li>
+<li><a title="PH amplifier" href="https://www.phidgets.com/?tier=3&catid=11&pcid=9&prodid=103">x1 Phidgets PH/ORB amplifier modules</a></li> 
+<li><a title="Galvalic isolator" href="https://www.dfrobot.com/product-1621.html">x1 Galvanic isolator for the pH and Orp probes</a></li> 
+<li><a title="Doping pump for PH" href="<li><a title="https://www.trattamento-acque.net/dosaggio/pompe-peristaltiche/pompe-a-portata-fissa/pompa-serie-mp2-p-detail.html" href="[[https://www.trattamento-acque.net/dosaggio/pompe-peristaltiche/pompe-a-portata-fissa/pompa-serie-mp2-p-detail.html](https://www.aliexpress.com/item/32699503099.html?spm=a2g0o.order_list.0.0.34d51802hCfy6W)](https://www.aliexpress.com/item/32699503099.html?spm=a2g0o.order_list.0.0.34d51802hCfy6W)">x1 Peristaltic pumps, suction lances for tanks, pH and Orp probes</a></li>
+
+">x1 Peristaltic pumps, suction lances for tanks, pH and Orp probes</a></li>
 <li><a title="http://electrolyseur.fr/pool-terre.html" href="http://electrolyseur.fr/pool-terre.html">x1 Water grounding</a></li>
 <li><a title="http://electrolyseur.fr/kit-sonde-DS18B20-filtration-piscine.html" href="http://electrolyseur.fr/kit-sonde-DS18B20-filtration-piscine.html">x1 Water temperature probe (DS18B20)</a></li>
 <li><a title="https://fr.aliexpress.com/item/OOTDTY-G1-4-Pouces-5-v-0-0-5-MPa-Pression-Capteur-Capteur-D-huile-Carburant/32851667666.html?transAbTest=ae803_5&ws_ab_test=searchweb0_0%2Csearchweb201602_3_10065_10068_319_10892_317_10696_10084_453_454_10083_10618_10304_10307_10820_10821_537_10302_536_10902_10843_10059_10884_10887_321_322_10103%2Csearchweb201603_57%2CppcSwitch_0&algo_pvid=2456b33d-d7ee-4515-863d-af0c6b322395&algo_expid=2456b33d-d7ee-4515-863d-af0c6b322395-20
