@@ -12,3 +12,7 @@ Version 1.0.0
 * interlock option to prevent pump from running if interlock level is low (use example is when filtration pump is not ON, Orp and pH pumps may not run) 
 * option to use a separate (input) sensor pin to sense if pump is running from the actual output pin to start/stop the pump. This is useful for instance 
 when an external system is managing the start/stop of the pump and we just need to know whether it is running or not
+
+
+###### CAHNGES
+Cahnged relay state to be 1=on ,0=off to suit the board im using
