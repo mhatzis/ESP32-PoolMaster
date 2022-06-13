@@ -15,4 +15,4 @@ when an external system is managing the start/stop of the pump and we just need 
 
 
 ###### CAHNGES
-Cahnged relay state to be 1=on ,0=off to suit the board im using
+Changed relay state to be 1=on ,0=off to suit the board im using
