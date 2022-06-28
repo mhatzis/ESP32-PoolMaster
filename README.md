@@ -14,11 +14,11 @@ Compared to the initial ESP32 project from Gixy31, the main differences are:
   <li> addded extra fields to DB</li>
   <li> changed the pump.h to accomodate the board im using/li>
   <li> Added external RTC in case internet is down it will get local time and still work as intended/li>
+  <li> Added Aysnc OTA updater as i couldnt get teh Arduino OTA to work/li>
 	
 	
 </ul>  <br />
   The project isn't a fork of the original one due to the different structure of source files with PlatformIO ((.cpp, .h).
-  A dedicated board has been designed to host all components. There are 8 LEDs at the bottom to display status, warnings and alarms.
   
   This latest version (V6, aka ESP-2.0) implement direct usage of FreeRTOS functions for managing tasks and queues. There are 10 tasks sharing the
   app_CPU :
@@ -64,7 +64,7 @@ pH is regulated by injecting Acid from a tank into the pool water (a relay start
 ORP is not been used but can be adapted to start stop the chlorinator <br />
 Defined time-slots and water temperature are used to start/stop the filtration pump for a daily given amount of time (a relay starts/stops the filtration pump)<br />
 Tank-levels are estimated based on the running-time and flow-rate of each pump.<br />
-wifi connected but no locla web page yet to set ip address or wireless ssid parameteres. this needs to be done via the code for now<br />
+wifi connected but no local web page yet to set ip address or wireless ssid parameteres. this needs to be done via the code for now<br />
 <br />
 
 An API function enables telling the system what the outside air temperature is. In case it is below -2.0°C, filtration is started until it rises back above +2.0°C<br />
