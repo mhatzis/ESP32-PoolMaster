@@ -26,12 +26,12 @@ Compared to the initial ESP32 project from Gixy31, the main differences are:
   - PoolMaster, running every 500ms, which mainly supervises the overall timing of the system;
   - AnalogPoll, running every 125ms, to acquire analog measurements of pH, ORP and Pressure with an ADS115 sensor on an I2C bus;
   - GetTemp, running every 1000ms, to acquire water and air temperatures with DS18B20 sensors on two 1Wire busses;
-  - ORPRegulation, running every 1000ms, to manage Chlorine pump;
+  - ORPRegulation, running every 1000ms, to manage chlorinator;
   - pHRegulation, running every 1000ms, to manage Acid/Soda pump;
-  - ProcessCommand, running every 500ms, to process commands received on /Home/Pool6/API MQTT Topic;
+  - ProcessCommand, running every 500ms, to process commands received on /Home/Pool/API MQTT Topic;
   - SettingsPublish, running when notified only (e.g with external command), to publish settings on the MQTT topic;
   - MeasuresPublish, running every 30s and when notified, to publish actual measures and status;
-  - StatusLights, running every 3000ms, to display a row of 8 status LEDs on the mother board, through a PCF8574A on the I2C bus.
+  
 
   </p><br /><br />
 
@@ -68,7 +68,7 @@ wifi connected but no local web page yet to set ip address or wireless ssid para
 <br />
 
 An API function enables telling the system what the outside air temperature is. In case it is below -2.0°C, filtration is started until it rises back above +2.0°C<br />
-Communication with the system is performed using the MQTT protocol over an Ethernet connection to the local network/MQTT broker.<br /><br />
+Communication with the system is performed using the MQTT protocol over an Wifi connection to the local network/MQTT broker.<br /><br />
 
 Every 30 seconds (by default), the system will publish on the "PoolTopicMeas1" and "PoolTopicMeas2"(see in code below) the following payloads in Json format:<br />
   {"Tmp":818,"pH":321,"PSI":56,"Orp":583,"FilUpT":8995,"PhUpT":0,"ChlUpT":0}<br />
@@ -79,30 +79,30 @@ Every 30 seconds (by default), the system will publish on the "PoolTopicMeas1" a
   PSI: measured Water pressure value in bar x100 (0.56bar in the above example payload)<br />
   FiltUpT: current running time of Filtration pump in seconds (reset every 24h. 8995secs in the above example payload)<br />
   PhUpT: current running time of Ph pump in seconds (reset every 24h. 0secs in the above example payload)<br />
-  ChlUpT: current running time of Chl pump in seconds (reset every 24h. 0secs in the above example payload)<br />
+  ChlUpT: current running time of Chl pump in seconds (reset every 24h. 0secs in the above example payload)(TO BECOME OBSOLETE)<br />
   AcidF: percentage fill estimate of acid tank ("pHTank" command must have been called when a new acid tank was set in place in order to have accurate value)<br />
-  ChlF: percentage fill estimate of Chlorine tank ("ChlTank" command must have been called when a new Chlorine tank was set in place in order to have accurate value)<br />
+  ChlF: percentage fill estimate of Chlorine tank ("ChlTank" command must have been called when a new Chlorine tank was set in place in order to have accurate value)(TO BECOME OBSOLETE)<br />
 IO: a variable of type BYTE where each individual bit is the state of a digital input on the Arduino. These are :<br />	
 <ul>
-<li>FiltPump: current state of Filtration Pump (0=on, 1=off)</li>
-<li>PhPump: current state of Ph Pump (0=on, 1=off)</li>
-<li>ChlPump: current state of Chl Pump (0=on, 1=off)</li>
+<li>FiltPump: current state of Filtration Pump (1=on, 0=off)</li>
+<li>RobotPump: current state of Clorinator (1=on, 0=off)</li>	
+<li>PhPump: current state of Ph Pump ((1=on, 0=off)</li>
+<li>ChlPump: current state of Chl Pump (1=on, 0=off)(TO BECOME OBSOLETE)</li>
 <li>PhlLevel: current state of Acid tank level (0=empty, 1=ok)</li>
 <li>ChlLevel: current state of Chl tank level (0=empty, 1=ok)</li>
 <li>PSIError: over-pressure error</li>
 <li>pHErr: pH pump overtime error flag</li>
-<li>ChlErr: Chl pump overtime error flag</li>
+<li>ChlErr: Chl pump overtime error flag(TO BECOME OBSOLETE)</li>
 </ul><br />
 IO2: a variable of type BYTE where each individual bit is the state of a digital input on the Arduino. These are :<br /><br />
 <ul>
 <li>pHPID: current state of pH PID regulation loop (1=on, 0=off)</li>
 <li>OrpPID: current state of Orp PID regulation loop (1=on, 0=off)</li>
 <li>Mode: state of pH and Orp regulation mode (0=manual, 1=auto)</li>
-<li>Heat: state of water heat command (0=off, 1=on)</li>
+<li>Heat: state of water heat command (0=off, 1=on)(NOT USED)</li>
 <li>R1: state of Relay1 (0=off, 1=on)</li>
 <li>R2: state of Relay2 (0=off, 1=on)</li>
-<li>R6: state of Relay6 (0=off, 1=on)</li>
-<li>R7: state of Relay7 (0=off, 1=on)</li>
+
 </ul><br />
 
 
@@ -114,7 +114,7 @@ IO2: a variable of type BYTE where each individual bit is the state of a digital
 - Wifi credentials<br />
 - MQTT broker IP address and login credentials<br />
 - possibly the topic names on the MQTT broker to subscribe and publish to<br />
-- the Kp,Ki,Kd parameters for both PID loops in case your peristaltic pumps have a different throughput than 1.5Liters/hour for the pH pump and 1.5Liters/hour for the Chlorine pump. Also the default Kp values were adjusted for a 50m3 pool volume. You might have to adjust the Kp values in case of a different pool volume and/or peristaltic pumps throughput (start by adjusting it proportionally). In any case these parameters are likely to require adjustments for every pool<br /></p>
+- the Kp,Ki,Kd parameters for both PID loops in case your peristaltic pumps have a different throughput than 1.5Liters/hour for the pH pump and 1.5Liters/hour for the Chlorine pump. Also the default Kp values were adjusted for a 30m3 pool volume. You might have to adjust the Kp values in case of a different pool volume and/or peristaltic pumps throughput (start by adjusting it proportionally). In any case these parameters are likely to require adjustments for every pool<br /></p>
 
 <h4>Tips</h4>
 Before attempting to regulate your pool water with this automated system, it is essential that you start with:<br />
@@ -140,6 +140,7 @@ Below are the Payloads/commands to publish on the "PoolTopicAPI" topic (see hard
 <li>{"Mode":1} or {"Mode":0}         -> set "Mode" to manual (0) or Auto (1). In Auto, filtration starts/stops at set times of the day and pH and Orp are regulated</li> 
 <li>{"Heat":1} or {"Heat":0}         -> start/stop the regulation of the pool water temperature</li>
 <li>{"FiltPump":1} or {"FiltPump":0} -> manually start/stop the filtration pump</li>
+<li>{"Chlorinator":1} or {"Chlorinator":0}   -> manually start/stop the Chlorinator to produce chl/li>	
 <li>{"ChlPump":1} or {"ChlPump":0}   -> manually start/stop the Chl pump to add more Chlorine</li>
 <li>{"PhPump":1} or {"PhPump":0}     -> manually start/stop the Acid pump to lower the Ph</li>
 <li>{"PhPID":1} or {"PhPID":0}       -> start/stop the Ph PID regulation loop</li>
@@ -199,7 +200,7 @@ Below are the Payloads/commands to publish on the "PoolTopicAPI" topic (see hard
 
 <h4>Wiring</h4>
 <p>
-Below is a (quick and dirty) wiring diagram with the Controllino MAXI. Right click and display image in full screen to see the details.
+TO BE UPDATED
 <p align="center"> <img src="/docs/Wiring.jpg" width="702" title="Wiring"> </p> <br />
 </p>
 
