@@ -182,7 +182,7 @@ Below are the Payloads/commands to publish on the "PoolTopicAPI" topic (see hard
 <h4>Hardware</h4>
 <p>
 <ul>
-<li><a title="Robotdyn esp32 smart home controller" href="[https://www.controllino.biz/product/controllino-maxi/](https://robotdyn.com/catalog/smarthome/esp32-4-relays-controller-board-for-wi-fi-or-bluetooth-smart-home-system-equipment-control-programmable-esp32-4-relays-controller-board-for-wi-fi-or-bluetooth-smart-home-system-equipment-control-programmable-esp32-4-relays-controller-boa)">x1 Robotdyn esp32 smart home controller</li>
+<li><a title="Robotdyn esp32 smart home controller" href="(https://robotdyn.com/catalog/smarthome/esp32-4-relays-controller-board-for-wi-fi-or-bluetooth-smart-home-system-equipment-control-programmable-esp32-4-relays-controller-board-for-wi-fi-or-bluetooth-smart-home-system-equipment-control-programmable-esp32-4-relays-controller-boa)">x1 Robotdyn esp32 smart home controller</li>
 <li><a title="PH amplifier" href="https://www.phidgets.com/?tier=3&catid=11&pcid=9&prodid=103">x1 Phidgets PH/ORB amplifier modules</a></li> 
 <li><a title="Galvalic isolator" href="https://www.dfrobot.com/product-1621.html">x1 Galvanic isolator for the pH and Orp probes</a></li> 
 <li><a title="Doping pump for PH"href="[[https://www.trattamento-acque.net/dosaggio/pompe-peristaltiche/pompe-a-portata-fissa/pompa-serie-mp2-p-detail.html](https://www.aliexpress.com/item/32699503099.html?spm=a2g0o.order_list.0.0.34d51802hCfy6W)](https://www.aliexpress.com/item/32699503099.html?spm=a2g0o.order_list.0.0.34d51802hCfy6W)"</a></li> 
