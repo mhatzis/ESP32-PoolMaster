@@ -1,4 +1,4 @@
-<h2>ESP32 PoolMaster for salt water pools</h2>
+<h2>ESP32 PoolMaster for Salt water pools</h2>
 <h4>Brief description</h4>
 <p> This project is a folk from Gixy31 software port to an ESP32 platform of the PoolMaster project from Loic74650 (https://github.com/Loic74650/PoolMaster)<br />
 Compared to the initial ESP32 project from Gixy31, the main differences are:
@@ -38,11 +38,11 @@ Compared to the initial ESP32 project from Gixy31, the main differences are:
 <p align="center"> <img src="/docs/Profiling.jpg" width="802" title=""> </p>  <br /><br />r /> 
 <p align="center"> <img src="/docs/Page 0.JPG" width="300" title=""> </p>
 <p align="center"> <img src="/docs/Page 1.JPG" width="300" title=""> </p>
-<p align="center"> <img src="/docs/Page 3.JPG" width="300" title=""> </p><br /><br />  
+
  
 
 
-<h2>PoolMaster</h2>
+<h2>PoolMaster-SALT</h2>
 
 
 <br />
