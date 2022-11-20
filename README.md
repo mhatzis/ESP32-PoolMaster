@@ -36,7 +36,6 @@ Compared to the initial ESP32 project from Gixy31, the main differences are:
   </p><br /><br />
 
 <p align="center"> <img src="/docs/Profiling.jpg" width="802" title=""> </p>  <br /><br />r /> 
-https://github.com/mhatzis/ESP32-PoolMaster/blob/3499193e3d323d5ae39c479d4029278126653c60/docs/Screen%20Shot%202022-11-20%20at%208.55.58%20am.png
 <p align="center"> <img src="/docs/Page 0.JPG" width="300" title=""> </p>
 <p align="center"> <img src="/docs/Page 1.JPG" width="300" title=""> </p>
 <p align="center"> <img src="/docs/Page 3.JPG" width="300" title=""> </p><br /><br />  
