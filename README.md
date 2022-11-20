@@ -46,7 +46,7 @@ Compared to the initial ESP32 project from Gixy31, the main differences are:
 
 
 <br />
-<p align="center"> <img src="/docs/PoolMaster_2.jpg" width="802" title="Overview"> </p> <br /><br />
+<p align="center"> <img src="/docs/PoolMaster.jpg" width="802" title="Overview"> </p> <br /><br />
 
 <br />
 <p align="center"> <img src="/docs/Grafana.png" width="802" title="Dashboard"> </p> <br /><br />
